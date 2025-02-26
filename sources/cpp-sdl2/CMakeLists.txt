@@ -8,31 +8,31 @@ project(cpp_sdl2
 	)
 
 set(CPP_SDL2_SOURCES
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/color.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/event.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/exception.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/game_controller.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/haptic.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/joystick.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/mouse.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/pixel.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/rect.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/renderer.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/sdl.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/shared_object.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/simd.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/surface.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/texture.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/timer.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/utils.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/vec2.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/cpp-sdl2/window.hpp
+	${PROJECT_SOURCE_DIR}/color.hpp
+	${PROJECT_SOURCE_DIR}/event.hpp
+	${PROJECT_SOURCE_DIR}/exception.hpp
+	${PROJECT_SOURCE_DIR}/game_controller.hpp
+	${PROJECT_SOURCE_DIR}/haptic.hpp
+	${PROJECT_SOURCE_DIR}/joystick.hpp
+	${PROJECT_SOURCE_DIR}/mouse.hpp
+	${PROJECT_SOURCE_DIR}/pixel.hpp
+	${PROJECT_SOURCE_DIR}/rect.hpp
+	${PROJECT_SOURCE_DIR}/renderer.hpp
+	${PROJECT_SOURCE_DIR}/sdl.hpp
+	${PROJECT_SOURCE_DIR}/shared_object.hpp
+	${PROJECT_SOURCE_DIR}/simd.hpp
+	${PROJECT_SOURCE_DIR}/surface.hpp
+	${PROJECT_SOURCE_DIR}/texture.hpp
+	${PROJECT_SOURCE_DIR}/timer.hpp
+	${PROJECT_SOURCE_DIR}/utils.hpp
+	${PROJECT_SOURCE_DIR}/vec2.hpp
+	${PROJECT_SOURCE_DIR}/window.hpp
 	)
 
 add_library(cpp_sdl2 INTERFACE)
 target_compile_features(cpp_sdl2 INTERFACE cxx_std_17)
 target_sources(cpp_sdl2 INTERFACE ${CPP_SDL2_SOURCES})
-target_include_directories(cpp_sdl2 INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/sources)
+target_include_directories(cpp_sdl2 INTERFACE ${PROJECT_SOURCE_DIR})
 
 find_package(SDL2 CONFIG REQUIRED)
 target_link_libraries(cpp_sdl2 INTERFACE SDL2::SDL2)
@@ -65,9 +65,3 @@ if(CPP_SDL2_DISABLE_EXCEPTIONS)
 	target_compile_definitions(cpp_sdl2 INTERFACE CPP_SDL2_DISABLE_EXCEPTIONS)
 endif()
 
-# TODO: handle installation
-
-option(CPP_SDL2_BUILD_EXAMPLES "Build examples" OFF)
-if(CPP_SDL2_BUILD_EXAMPLES)
-	add_subdirectory(examples)
-endif()

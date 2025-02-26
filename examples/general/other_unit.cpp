@@ -1,4 +1,4 @@
-#include "cpp-sdl2/sdl.hpp"
+#include "sdl.hpp"
 
 void useless_function()
 {

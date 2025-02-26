@@ -1,5 +1,5 @@
 #include <chrono>
-#include <cpp-sdl2/sdl.hpp>
+#include <sdl.hpp>
 #include <cstdlib> // Using C-style rand
 #include <ctime>
 #include <iostream>
