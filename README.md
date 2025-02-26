@@ -9,7 +9,7 @@
 
 Basic C++17 bindings to [SDL2], implemented as an header-only library
 
-[SDL2]: https://wiki.libsdl.org/FrontPage
+[SDL2]: https://wiki.libsdl.org/SDL2/FrontPage
 
 ## Documentation
 
@@ -28,6 +28,10 @@ automatically.
 This library is header-only, meaning that there is no build step. You only need to make the `sources` directory visible
 to your compiler, and replace your `SDL.h` include by `#include <cpp-sdl2/sdl.hpp`. You still need to have SDL2 be
 visible and properly linked.
+
+cpp-sdl2 offers a lighter and smaller alternative to the [Centurion] library.
+
+[Centurion]: https://github.com/albin-johansson/centurion
 
 ## Configuration flags
 
