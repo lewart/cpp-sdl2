@@ -29,7 +29,8 @@ This library is header-only, meaning that there is no build step. You only need 
 to your compiler, and replace your `SDL.h` include by `#include <cpp-sdl2/sdl.hpp`. You still need to have SDL2 be
 visible and properly linked.
 
-cpp-sdl2 offers a lighter and smaller alternative to the [Centurion] library.
+Compared to [Centurion], cpp-sdl2 is designed to be a lighter-weight and more streamlined library,
+providing a more readable namespace `sdl::`.
 
 [Centurion]: https://github.com/albin-johansson/centurion
 

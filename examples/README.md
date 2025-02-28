@@ -12,4 +12,16 @@ This folder contains a series of short programs that demonstrate this library fo
  - **opengl** : A program that display one triangle on a dark blue background. Used to demonstrate how to initialize painlessly a GL window anc context with cpp-sdl2
  - **vulkan** : A program that display one triangle on a dark blue background. Used to demonstate how to initialze painlessly a Vulkan Window, Instance and a (platform specific) Surface object with cpp-sdl2
 
+## Building
+
 This diretory is one project that contains all the mentioned examples
+
+To build examples
+
+```cd examples/
+mkdir build
+cd build/
+cmake ..
+cmake --build .
+```
+
