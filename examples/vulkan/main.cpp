@@ -7,7 +7,7 @@
 #define VULKAN_HPP_TYPESAFE_CONVERSION 1
 #include <vulkan/vulkan.hpp>
 
-#include <cpp-sdl2/sdl.hpp>
+#include <sdl.hpp>
 
 // use validation layers only on debug builds
 #if 0 && defined(_DEBUG) || defined(DEBUG)

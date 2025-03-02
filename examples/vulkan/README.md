@@ -2,7 +2,7 @@
 
 This is a small "hello vulkan" program, but that uses cpp-sdl2 for enumerating device extensions and to create the platform specific vkSurface object
 
-the interesting code for our demo amont to this : 
+the interesting code for our demo amount to this : 
 
 Include like this (with an OpenGL loader of your choice)
 ```cpp

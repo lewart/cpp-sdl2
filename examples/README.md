@@ -16,12 +16,26 @@ This folder contains a series of short programs that demonstrate this library fo
 
 This diretory is one project that contains all the mentioned examples
 
-To build examples
+To build **general** example
 
 ```cd examples/
 mkdir build
 cd build/
 cmake ..
 cmake --build .
+```
+
+To build **opengl** example
+
+```...
+cmake .. -DCPP_SDL2_ENABLE_OPENGL=ON
+...
+```
+
+To build **vulkan** example
+
+```...
+cmake .. -DCPP_SDL2_ENABLE_VULKAN=ON
+...
 ```
 

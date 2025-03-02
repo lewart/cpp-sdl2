@@ -1,5 +1,5 @@
 // To use the GL wrapper, define the following
-#include <cpp-sdl2/sdl.hpp>
+#include <sdl.hpp>
 #include <glad/glad.h>
 
 // The following arrays are the geometry data for one triangle with vertex

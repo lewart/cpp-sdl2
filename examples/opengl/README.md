@@ -2,7 +2,7 @@
 
 This is a small "hello opengl" program, but that uses cpp-sdl2 for windowing and context management.
 
-the interesting code for our demo amont to this : 
+the interesting code for our demo amount to this : 
 
 Include like this (with an OpenGL loader of your choice)
 ```cpp
@@ -18,7 +18,7 @@ Include like this (with an OpenGL loader of your choice)
 	// Create an SDL window, with the SDL_WINDOW_OPENGL flags
 	auto window = sdl::Window("OpenGL", {800, 600}, SDL_WINDOW_OPENGL);
 
-	// Bevore creating a context, set the flag for the version you want to get,
+	// Before creating a context, set the flag for the version you want to get,
 	// here we want Core OpenGL 3.3
 	sdl::Window::gl_set_attribute(
 		SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
