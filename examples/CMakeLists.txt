@@ -23,7 +23,7 @@ target_include_directories(cpp_sdl2_example_general PRIVATE
 if(CPP_SDL2_ENABLE_OPENGL)
 	add_executable(${PROJECT_NAME}_opengl opengl/main.cpp opengl/glad/src/glad.c)
 	target_include_directories(cpp_sdl2_example_opengl PRIVATE opengl/glad/include)
-	target_link_libraries(cpp_sdl2_example_opengl PRIVATE cpp_sdl2 SDL2::SDL2)
+	target_link_libraries(cpp_sdl2_example_opengl PRIVATE cpp_sdl2 SDL2::SDL2 ${CMAKE_DL_LIBS})
 endif()
 
 if(CPP_SDL2_ENABLE_VULKAN)
@@ -34,5 +34,5 @@ if(CPP_SDL2_ENABLE_VULKAN)
 		vulkan/simple_tri.vert.glsl
 		vulkan/simple_tri.vert.spv
 		)
-	target_link_libraries(cpp_sdl2_example_vulkan PRIVATE cpp_sdl2 SDL2::SDL2)
+	target_link_libraries(cpp_sdl2_example_vulkan PRIVATE cpp_sdl2 SDL2::SDL2 ${CMAKE_DL_LIBS})
 endif()

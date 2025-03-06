@@ -27,15 +27,15 @@ cmake --build .
 
 To build **opengl** example
 
-```...
+```(...)
 cmake .. -DCPP_SDL2_ENABLE_OPENGL=ON
-...
+(...)
 ```
 
 To build **vulkan** example
 
-```...
+```(...)
 cmake .. -DCPP_SDL2_ENABLE_VULKAN=ON
-...
+(...)
 ```
 
