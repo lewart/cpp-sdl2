@@ -213,8 +213,8 @@ int main(int argc, char* argv[])
 			device->createImageViewUnique(imageViewCreateInfo));
 	}
 
-	const auto fragment_data = read_file("../vk/simple_tri.frag.spv");
-	const auto vertex_data	 = read_file("../vk/simple_tri.vert.spv");
+	const auto fragment_data = read_file("../vulkan/simple_tri.frag.spv");
+	const auto vertex_data	 = read_file("../vulkan/simple_tri.vert.spv");
 
 	vk::ShaderModuleCreateInfo fragment_shader_module_create_info(
 		{}, fragment_data.size(), (uint32_t*)fragment_data.data()),
@@ -389,7 +389,7 @@ int main(int argc, char* argv[])
 		commandBuffers[i]->beginRenderPass(
 			renderPassBeginInfo, vk::SubpassContents::eInline);
 		commandBuffers[i]->bindPipeline(
-			vk::PipelineBindPoint::eGraphics, pipeline.get());
+			vk::PipelineBindPoint::eGraphics, pipeline.value.get());
 		commandBuffers[i]->draw(3, 1, 0, 0);
 		commandBuffers[i]->endRenderPass();
 		commandBuffers[i]->end();

@@ -34,5 +34,5 @@ if(CPP_SDL2_ENABLE_VULKAN)
 		vulkan/simple_tri.vert.glsl
 		vulkan/simple_tri.vert.spv
 		)
-	target_link_libraries(cpp_sdl2_example_vulkan PRIVATE cpp_sdl2 SDL2::SDL2 ${CMAKE_DL_LIBS})
+	target_link_libraries(cpp_sdl2_example_vulkan PRIVATE cpp_sdl2 SDL2::SDL2)
 endif()
