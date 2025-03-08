@@ -430,7 +430,13 @@ int main(int argc, char* argv[])
 											  &swapChain.get(),
 											  &imageIndex.value};
 
-		presentQueue.presentKHR(presentInfo);
+		auto result = presentQueue.presentKHR(presentInfo);
+		switch ( result )
+		{
+			case vk::Result::eSuccess: break;
+			case vk::Result::eSuboptimalKHR: std::cout << "vk::Queue::presentKHR returned vk::Result::eSuboptimalKHR.\n"; break;
+			default: assert( false ); // vk::Queue::presentKHR has returned an unexpected result
+		}
 		device->waitIdle();
 	}
 
