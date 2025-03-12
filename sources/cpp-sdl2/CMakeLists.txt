@@ -4,7 +4,7 @@ project(cpp_sdl2
 	VERSION 0.1.0
 	DESCRIPTION "Basic C++17 bindings to SDL2"
 	HOMEPAGE_URL "https://github.com/Edhebi/cpp-sdl2"
-	LANGUAGES C CXX
+	LANGUAGES CXX
 	)
 
 set(CPP_SDL2_SOURCES

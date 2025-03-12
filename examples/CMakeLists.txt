@@ -22,8 +22,9 @@ target_include_directories(cpp_sdl2_example_general PRIVATE
 
 if(CPP_SDL2_ENABLE_OPENGL)
 	add_executable(${PROJECT_NAME}_opengl opengl/main.cpp opengl/glad/src/glad.c)
+	add_subdirectory(opengl/glad opengl/glad/build)
 	target_include_directories(cpp_sdl2_example_opengl PRIVATE opengl/glad/include)
-	target_link_libraries(cpp_sdl2_example_opengl PRIVATE cpp_sdl2 SDL2::SDL2 ${CMAKE_DL_LIBS})
+	target_link_libraries(cpp_sdl2_example_opengl PRIVATE cpp_sdl2 SDL2::SDL2 glad)
 endif()
 
 if(CPP_SDL2_ENABLE_VULKAN)
