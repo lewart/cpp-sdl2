@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
 	// Create an SDL window, with the SDL_WINDOW_OPENGL flags
 	auto window = sdl::Window("OpenGL", {800, 600}, SDL_WINDOW_OPENGL);
 
-	// Bevore creating a context, set the flag for the version you want to get,
+	// Before creating a context, set the flag for the version you want to get,
 	// here we want Core OpenGL 3.3
 	sdl::Window::gl_set_attribute(
 		SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -69,10 +69,14 @@ int main(int argc, char* argv[])
 
 	// You are done, now you can use OpenGL!
 
-	// Call whatever function loader you want, in this example we use GLAD
-	// because we generated a really small version of it for 3.3 Core:
-	gladLoadGL();
+	// Call whatever function loader you want, in this example we use GLAD.
+	int status = gladLoadGLLoader(SDL_GL_GetProcAddress);
+	if (status == 0) {
+		fprintf(stderr, "Failed to initialize OpenGL context\n");
+		abort();
+	}
 
+	// We generated a really small version of glad for Core OpenGL 3.3.
 	pirnt_gl_version();
 	GLuint shader_program =
 		build_shader_program(vert_shader_source, frag_shader_source);
