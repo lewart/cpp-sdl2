@@ -1,3 +1,4 @@
+#include <iostream>
 // To use the GL wrapper, define the following
 #include <sdl.hpp>
 #include <glad/glad.h>
@@ -45,7 +46,7 @@ void main()
 )_";
 
 // This function print context version information to a console
-void pirnt_gl_version();
+void print_gl_version();
 
 // This function build a shader program from shader source code
 GLuint build_shader_program(
@@ -72,12 +73,12 @@ int main(int argc, char* argv[])
 	// Call whatever function loader you want, in this example we use GLAD.
 	int status = gladLoadGLLoader(SDL_GL_GetProcAddress);
 	if (status == 0) {
-		fprintf(stderr, "Failed to initialize OpenGL context\n");
+		std::cerr << "Failed to initialize OpenGL context" << std::endl;
 		abort();
 	}
 
 	// We generated a really small version of glad for Core OpenGL 3.3.
-	pirnt_gl_version();
+	print_gl_version();
 	GLuint shader_program =
 		build_shader_program(vert_shader_source, frag_shader_source);
 
@@ -164,12 +165,12 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-void pirnt_gl_version()
+void print_gl_version()
 {
-	printf("\nVendor:\t%s\n", glGetString(GL_VENDOR));
-	printf("Renderer Device:\t%s\n", glGetString(GL_RENDERER));
-	printf("Context Version:\t%s\n", glGetString(GL_VERSION));
-	printf("Shading Language:\t%s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	std::cout << "\nVendor:\t" << glGetString(GL_VENDOR);
+	std::cout << "\nRenderer Device:\t" << glGetString(GL_RENDERER);
+	std::cout << "\nContext Version:\t" << glGetString(GL_VERSION);
+	std::cout << "\nShading Language:\t" << glGetString(GL_SHADING_LANGUAGE_VERSION);
 }
 
 GLuint build_shader_program(
@@ -190,13 +191,13 @@ GLuint build_shader_program(
 	if (glGetShaderiv(vert_shader, GL_COMPILE_STATUS, &success); !success)
 	{
 		glGetShaderInfoLog(vert_shader, sizeof info_log, nullptr, info_log);
-		fprintf(stderr, "%s\n", info_log);
+		std::cerr << info_log << std::endl;
 		abort();
 	}
 	if (glGetShaderiv(frag_shader, GL_COMPILE_STATUS, &success); !success)
 	{
 		glGetShaderInfoLog(frag_shader, sizeof info_log, nullptr, info_log);
-		fprintf(stderr, "%s\n", info_log);
+		std::cerr << info_log << std::endl;
 		abort();
 	}
 
@@ -206,7 +207,7 @@ GLuint build_shader_program(
 	if (glGetProgramiv(program, GL_LINK_STATUS, &success); !success)
 	{
 		glGetProgramInfoLog(program, sizeof info_log, nullptr, info_log);
-		fprintf(stderr, "%s\n", info_log);
+		std::cerr << info_log << std::endl;
 		abort();
 	}
 
