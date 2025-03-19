@@ -166,12 +166,10 @@ int main(int argc, char* argv[])
 
 void pirnt_gl_version()
 {
-	printf("%s\n", glGetString(GL_VENDOR));
-	printf("%s\n", glGetString(GL_RENDERER));
-	int major, minor;
-	glGetIntegerv(GL_MAJOR_VERSION, &major);
-	glGetIntegerv(GL_MINOR_VERSION, &minor);
-	printf("context version: %d.%d\n", major, minor);
+	printf("\nVendor:\t%s\n", glGetString(GL_VENDOR));
+	printf("Renderer Device:\t%s\n", glGetString(GL_RENDERER));
+	printf("Context Version:\t%s\n", glGetString(GL_VERSION));
+	printf("Shading Language:\t%s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 }
 
 GLuint build_shader_program(
