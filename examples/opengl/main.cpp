@@ -1,7 +1,19 @@
 #include <iostream>
+#include <string>
 // To use the GL wrapper, define the following
+#include <glbinding/gl/gl.h>
+// Const definition from X.h conflicting with CallbackMask.h,
+// which is included through Binding.h
+//#ifdef None
+//#undef None
+//#endif
+#include <glbinding/Binding.h>
+#include <glbinding/ContextInfo.h>
+// sdl.h SHOULD be included after glbinding in Linux
+// because of conflicting const None from X.h.
 #include <sdl.hpp>
-#include <glad/glad.h>
+
+using namespace gl;
 
 // The following arrays are the geometry data for one triangle with vertex
 // colors
@@ -70,12 +82,8 @@ int main(int argc, char* argv[])
 
 	// You are done, now you can use OpenGL!
 
-	// Call whatever function loader you want, in this example we use GLAD.
-	int status = gladLoadGLLoader(SDL_GL_GetProcAddress);
-	if (status == 0) {
-		std::cerr << "Failed to initialize OpenGL context" << std::endl;
-		abort();
-	}
+	// Call whatever function loader you want, in this example we use glbinding2.
+	glbinding::Binding::initialize(false);
 
 	// We generated a really small version of glad for Core OpenGL 3.3.
 	print_gl_version();
@@ -167,10 +175,12 @@ int main(int argc, char* argv[])
 
 void print_gl_version()
 {
-	std::cout << "\nVendor:\t" << glGetString(GL_VENDOR);
-	std::cout << "\nRenderer Device:\t" << glGetString(GL_RENDERER);
-	std::cout << "\nContext Version:\t" << glGetString(GL_VERSION);
-	std::cout << "\nShading Language:\t" << glGetString(GL_SHADING_LANGUAGE_VERSION);
+	std::cout << "\n"
+		<< "Vendor          :\t" << glbinding::ContextInfo::vendor() << "\n"
+		<< "Renderer Device :\t" << glbinding::ContextInfo::renderer() << "\n"
+		<< "OpenGL Version  :\t" <<  glbinding::ContextInfo::version() << "\n"
+		<< "Context Version :\t" << glGetString(GL_VERSION) << "\n"
+		<< "Shading Language:\t" << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 }
 
 GLuint build_shader_program(

@@ -21,10 +21,10 @@ target_include_directories(cpp_sdl2_example_general PRIVATE
 #target_link_libraries(cpp_sdl2_example_dll PRIVATE cpp_sdl2_example_dll_shared cpp_sdl2 SDL2::SDL2main)
 
 if(CPP_SDL2_ENABLE_OPENGL)
-	add_executable(${PROJECT_NAME}_opengl opengl/main.cpp opengl/glad/src/glad.c)
-	add_subdirectory(opengl/glad opengl/glad/build)
-	target_include_directories(cpp_sdl2_example_opengl PRIVATE opengl/glad/include)
-	target_link_libraries(cpp_sdl2_example_opengl PRIVATE cpp_sdl2 SDL2::SDL2 glad)
+	add_executable(${PROJECT_NAME}_opengl opengl/main.cpp)
+	find_package(glbinding REQUIRED)
+	target_link_libraries(${PROJECT_NAME}_opengl PRIVATE glbinding::glbinding)
+	target_link_libraries(cpp_sdl2_example_opengl PRIVATE cpp_sdl2 SDL2::SDL2)
 endif()
 
 if(CPP_SDL2_ENABLE_VULKAN)
