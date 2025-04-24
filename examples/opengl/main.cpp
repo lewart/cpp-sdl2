@@ -1,14 +1,17 @@
+#include <glbinding/gl/types.h>
 #include <iostream>
 #include <string>
+#include <unordered_map>
 // To use the GL wrapper, define the following
 #include <glbinding/gl/gl.h>
-// Const definition from X.h conflicting with CallbackMask.h,
+// A definition of const "None" from X.h conflicts with CallbackMask.h,
 // which is included through Binding.h
-//#ifdef None
-//#undef None
-//#endif
+// #ifdef None
+// #undef None
+// #endif
 #include <glbinding/Binding.h>
 #include <glbinding/ContextInfo.h>
+#include <glbinding/Version.h>
 // sdl.h SHOULD be included after glbinding in Linux
 // because of conflicting const None from X.h.
 #include <sdl.hpp>
@@ -29,8 +32,8 @@ GLfloat tri_vertex_buffer[]
 
 GLuint tri_index_buffer[]{0, 1, 2};
 
-// The following strings are a shader program that just bland the above data to
-// the screen
+// The following strings are a source code of a shader program
+// that just sends the above data to the GPU.
 const GLchar vert_shader_source[] = R"_(
 #version 330 core
 
@@ -57,12 +60,11 @@ void main()
 }
 )_";
 
-// This function print context version information to a console
+// This function prints the context version information to a console
 void print_gl_version();
 
-// This function build a shader program from shader source code
-GLuint build_shader_program(
-	const GLchar* vert_source, const GLchar* frag_source);
+// This function builds a shader program from the shader source code
+GLuint build_shader_program(const GLchar* vert_source, const GLchar* frag_source);
 
 int main(int argc, char* argv[])
 {
@@ -72,12 +74,11 @@ int main(int argc, char* argv[])
 
 	// Before creating a context, set the flag for the version you want to get,
 	// here we want Core OpenGL 3.3
-	sdl::Window::gl_set_attribute(
-		SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	sdl::Window::gl_set_attribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	sdl::Window::gl_set_attribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	sdl::Window::gl_set_attribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
-	// Create your context
+	// Create OpenGL context
 	auto context = window.create_context();
 
 	// You are done, now you can use OpenGL!
@@ -85,10 +86,9 @@ int main(int argc, char* argv[])
 	// Call whatever function loader you want, in this example we use glbinding2.
 	glbinding::Binding::initialize(false);
 
-	// We generated a really small version of glad for Core OpenGL 3.3.
+	// Here is a really small example of using glbinding2 for Core OpenGL 3.3.
 	print_gl_version();
-	GLuint shader_program =
-		build_shader_program(vert_shader_source, frag_shader_source);
+	GLuint shader_program = build_shader_program(vert_shader_source, frag_shader_source);
 
 	// We build a VertexArrayObject to reference our triangle geometry in the
 	// GPU
@@ -110,35 +110,18 @@ int main(int argc, char* argv[])
 
 	// Build VBO
 	glBindBuffer(GL_ARRAY_BUFFER, tri_vbo);
-	glBufferData(
-		GL_ARRAY_BUFFER,
-		18 * sizeof(GLfloat),
-		tri_vertex_buffer,
-		GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(GLfloat), tri_vertex_buffer, GL_STATIC_DRAW);
 	glVertexAttribPointer(
-		0,
-		3,
-		GL_FLOAT,
-		GL_FALSE,
-		6 * sizeof(GLfloat),
-		(void*)(0 * sizeof(GLfloat)));
+		0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(0 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(
-		1,
-		3,
-		GL_FLOAT,
-		GL_FALSE,
-		6 * sizeof(GLfloat),
-		(void*)(3 * sizeof(GLfloat)));
+		1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
 
 	// Build EBO
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, tri_ebo);
 	glBufferData(
-		GL_ELEMENT_ARRAY_BUFFER,
-		3 * sizeof(tri_index_buffer),
-		tri_index_buffer,
-		GL_STATIC_DRAW);
+		GL_ELEMENT_ARRAY_BUFFER, 3 * sizeof(tri_index_buffer), tri_index_buffer, GL_STATIC_DRAW);
 
 	// Clean behind yourself
 	glBindVertexArray(0);
@@ -176,43 +159,44 @@ int main(int argc, char* argv[])
 void print_gl_version()
 {
 	std::cout << "\n"
-		<< "Vendor          :\t" << glbinding::ContextInfo::vendor() << "\n"
-		<< "Renderer Device :\t" << glbinding::ContextInfo::renderer() << "\n"
-		<< "OpenGL Version  :\t" <<  glbinding::ContextInfo::version() << "\n"
-		<< "Context Version :\t" << glGetString(GL_VERSION) << "\n"
-		<< "Shading Language:\t" << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+			  << "Vendor          :\t" << glbinding::ContextInfo::vendor() << "\n"
+			  << "Renderer Device :\t" << glbinding::ContextInfo::renderer() << "\n"
+			  << "OpenGL Version  :\t" << glbinding::ContextInfo::version() << "\n"
+			  << "Context Version :\t" << glGetString(GL_VERSION) << "\n"
+			  << "Shading Language:\t" << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 }
 
-GLuint build_shader_program(
-	const GLchar* vert_source, const GLchar* frag_source)
+GLuint build_shader_program(const GLchar* vert_source, const GLchar* frag_source)
 {
-	GLuint vert_shader = glCreateShader(GL_VERTEX_SHADER);
-	GLuint frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
-	GLuint program	   = glCreateProgram();
+	std::unordered_map<std::string, GLuint> shader_id;
 
-	glShaderSource(vert_shader, 1, &vert_source, nullptr);
-	glShaderSource(frag_shader, 1, &frag_source, nullptr);
-	glCompileShader(vert_shader);
-	glCompileShader(frag_shader);
+	shader_id["vertex"] = glCreateShader(GL_VERTEX_SHADER);
+	shader_id["fragme"] = glCreateShader(GL_FRAGMENT_SHADER);
+	GLuint program		= glCreateProgram();
+
+	glShaderSource(shader_id["vertex"], 1, &vert_source, nullptr);
+	glShaderSource(shader_id["fragme"], 1, &frag_source, nullptr);
+	glCompileShader(shader_id["vertex"]);
+	glCompileShader(shader_id["fragme"]);
 
 	GLint  success = 0;
 	GLchar info_log[512];
 
-	if (glGetShaderiv(vert_shader, GL_COMPILE_STATUS, &success); !success)
+	if (glGetShaderiv(shader_id["vertex"], GL_COMPILE_STATUS, &success); !success)
 	{
-		glGetShaderInfoLog(vert_shader, sizeof info_log, nullptr, info_log);
+		glGetShaderInfoLog(shader_id["vertex"], sizeof info_log, nullptr, info_log);
 		std::cerr << info_log << std::endl;
 		abort();
 	}
-	if (glGetShaderiv(frag_shader, GL_COMPILE_STATUS, &success); !success)
+	if (glGetShaderiv(shader_id["fragme"], GL_COMPILE_STATUS, &success); !success)
 	{
-		glGetShaderInfoLog(frag_shader, sizeof info_log, nullptr, info_log);
+		glGetShaderInfoLog(shader_id["fragme"], sizeof info_log, nullptr, info_log);
 		std::cerr << info_log << std::endl;
 		abort();
 	}
 
-	glAttachShader(program, vert_shader);
-	glAttachShader(program, frag_shader);
+	glAttachShader(program, shader_id["vertex"]);
+	glAttachShader(program, shader_id["fragme"]);
 	glLinkProgram(program);
 	if (glGetProgramiv(program, GL_LINK_STATUS, &success); !success)
 	{
@@ -221,7 +205,7 @@ GLuint build_shader_program(
 		abort();
 	}
 
-	glDeleteShader(vert_shader);
-	glDeleteShader(frag_shader);
+	glDeleteShader(shader_id["vertex"]);
+	glDeleteShader(shader_id["fragme"]);
 	return program;
 }
