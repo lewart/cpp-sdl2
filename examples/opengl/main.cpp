@@ -1,3 +1,6 @@
+#include <cstdlib>
+#include <glbinding/gl/enum.h>
+#include <glbinding/gl/functions.h>
 #include <glbinding/gl/types.h>
 #include <iostream>
 #include <string>
@@ -60,8 +63,9 @@ void main()
 }
 )_";
 
-// This function prints the context version information to a console
-void print_gl_version();
+// This function prints a current context version informations to a console
+// and compares it to the requested version.
+void print_gl_version(const glbinding::Version requested);
 
 // This function builds a shader program from the shader source code
 GLuint build_shader_program(const GLchar* vert_source, const GLchar* frag_source);
@@ -69,14 +73,15 @@ GLuint build_shader_program(const GLchar* vert_source, const GLchar* frag_source
 int main(int argc, char* argv[])
 {
 	(void)argc, (void)argv;
+	glbinding::Version glContext = glbinding::Version(3, 3);
 	// Create an SDL window, with the SDL_WINDOW_OPENGL flags
 	auto window = sdl::Window("OpenGL", {800, 600}, SDL_WINDOW_OPENGL);
 
 	// Before creating a context, set the flag for the version you want to get,
 	// here we want Core OpenGL 3.3
 	sdl::Window::gl_set_attribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	sdl::Window::gl_set_attribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	sdl::Window::gl_set_attribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+	sdl::Window::gl_set_attribute(SDL_GL_CONTEXT_MAJOR_VERSION, glContext.majorVersion());
+	sdl::Window::gl_set_attribute(SDL_GL_CONTEXT_MINOR_VERSION, glContext.minorVersion());
 
 	// Create OpenGL context
 	auto context = window.create_context();
@@ -87,7 +92,7 @@ int main(int argc, char* argv[])
 	glbinding::Binding::initialize(false);
 
 	// Here is a really small example of using glbinding2 for Core OpenGL 3.3.
-	print_gl_version();
+	print_gl_version(glContext);
 	GLuint shader_program = build_shader_program(vert_shader_source, frag_shader_source);
 
 	// We build a VertexArrayObject to reference our triangle geometry in the
@@ -156,14 +161,26 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-void print_gl_version()
+void print_gl_version(const glbinding::Version requested)
 {
+	GLint vmajor, vminor;
+
+	glGetIntegerv(GL_MAJOR_VERSION, &vmajor);
+	glGetIntegerv(GL_MINOR_VERSION, &vminor);
+	glbinding::Version current = glbinding::Version(vmajor, vminor);
+
 	std::cout << "\n"
 			  << "Vendor          :\t" << glbinding::ContextInfo::vendor() << "\n"
 			  << "Renderer Device :\t" << glbinding::ContextInfo::renderer() << "\n"
 			  << "OpenGL Version  :\t" << glbinding::ContextInfo::version() << "\n"
 			  << "Context Version :\t" << glGetString(GL_VERSION) << "\n"
 			  << "Shading Language:\t" << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+	if (current < requested)
+	{
+		std::cerr << "Requested OpenGL version " << requested << " is not supported,\nonly "
+				  << current << " is avaliable.\n";
+		abort();
+	}
 }
 
 GLuint build_shader_program(const GLchar* vert_source, const GLchar* frag_source)
