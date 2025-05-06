@@ -163,16 +163,12 @@ int main(int argc, char* argv[])
 
 void print_gl_version(const glbinding::Version requested)
 {
-	GLint vmajor, vminor;
-
-	glGetIntegerv(GL_MAJOR_VERSION, &vmajor);
-	glGetIntegerv(GL_MINOR_VERSION, &vminor);
-	auto current = glbinding::Version(vmajor, vminor);
+	glbinding::Version current = glbinding::ContextInfo::version();
 
 	std::cout << "\n"
 			  << "Vendor          :\t" << glbinding::ContextInfo::vendor() << "\n"
 			  << "Renderer Device :\t" << glbinding::ContextInfo::renderer() << "\n"
-			  << "OpenGL Version  :\t" << glbinding::ContextInfo::version() << "\n"
+			  << "OpenGL Version  :\t" << current << "\n"
 			  << "Context Version :\t" << glGetString(GL_VERSION) << "\n"
 			  << "Shading Language:\t" << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 	if (current < requested)
