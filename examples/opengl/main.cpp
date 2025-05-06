@@ -73,12 +73,12 @@ GLuint build_shader_program(const GLchar* vert_source, const GLchar* frag_source
 int main(int argc, char* argv[])
 {
 	(void)argc, (void)argv;
-	glbinding::Version glContext = glbinding::Version(3, 3);
 	// Create an SDL window, with the SDL_WINDOW_OPENGL flags
 	auto window = sdl::Window("OpenGL", {800, 600}, SDL_WINDOW_OPENGL);
 
 	// Before creating a context, set the flag for the version you want to get,
 	// here we want Core OpenGL 3.3
+	auto glContext = glbinding::Version(3, 3);
 	sdl::Window::gl_set_attribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	sdl::Window::gl_set_attribute(SDL_GL_CONTEXT_MAJOR_VERSION, glContext.majorVersion());
 	sdl::Window::gl_set_attribute(SDL_GL_CONTEXT_MINOR_VERSION, glContext.minorVersion());
@@ -167,7 +167,7 @@ void print_gl_version(const glbinding::Version requested)
 
 	glGetIntegerv(GL_MAJOR_VERSION, &vmajor);
 	glGetIntegerv(GL_MINOR_VERSION, &vminor);
-	glbinding::Version current = glbinding::Version(vmajor, vminor);
+	auto current = glbinding::Version(vmajor, vminor);
 
 	std::cout << "\n"
 			  << "Vendor          :\t" << glbinding::ContextInfo::vendor() << "\n"

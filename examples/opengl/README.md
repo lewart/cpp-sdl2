@@ -20,18 +20,18 @@ Include like this (with an OpenGL loader of your choice)
 
 	// Before creating a context, set the flag for the version you want to get,
 	// here we want Core OpenGL 3.3
+	auto glContext = glbinding::Version(3, 3);
 	sdl::Window::gl_set_attribute(
 		SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	sdl::Window::gl_set_attribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	sdl::Window::gl_set_attribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+	sdl::Window::gl_set_attribute(SDL_GL_CONTEXT_MAJOR_VERSION, glContext.majorVersion());
+	sdl::Window::gl_set_attribute(SDL_GL_CONTEXT_MINOR_VERSION, glContext.minorVersion());
 
 	// Create your context
 	auto context = window.create_context();
 
 	// You are done, now you can use OpenGL!
 
-	// Call whatever function loader you want, in this example we use GLAD
-	// because we generated a really small version of it for 3.3 Core:
-	gladLoadGL();
+	// Call whatever function loader you want, in this example we use glbinding2.
+	glbinding::Binding::initialize(false);
 
 ```
